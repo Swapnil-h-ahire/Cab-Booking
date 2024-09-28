@@ -3,6 +3,8 @@ package com.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.entity.Cab;
 import com.entity.Driver;
@@ -47,7 +49,7 @@ public class DriverDAO {
 				d.setAddress(rs.getString(3));
 				d.setAdhar(rs.getString(6));
 				d.setEmail(rs.getString(4));
-				d.setId(1);
+				d.setId(rs.getInt(1));
 				d.setLicense(rs.getString(5));
 				d.setName(rs.getString(2));
 				d.setPassword(rs.getString(8));
@@ -61,12 +63,12 @@ public class DriverDAO {
 	public static boolean addCab(Cab c) {
 		boolean f=false;
 		try {
-			String sql="insert into driver_cab_details(cab_no,cab_type,no_of_seats) values(?,?,?)";
+			String sql="insert into cab(cab_no,cab_type,no_of_seats,did) values(?,?,?,?)";
 			PreparedStatement ps=conn.prepareStatement(sql);
 			ps.setString(1, c.getCabNo());
 			ps.setString(2, c.getCabType());
 			ps.setInt(3, c.getNoSeats());
-			
+			ps.setInt(4, c.getDId());
 			int i=ps.executeUpdate();
 			if (i==1) {
 				f=true;
@@ -75,5 +77,32 @@ public class DriverDAO {
 			e.printStackTrace();
 		}
 		return f;
+	}
+	public static List<Cab> allCabs(int id){
+		List<Cab> list=new ArrayList<Cab>();
+		try {
+			String sql="select * from cab where did=?";
+			PreparedStatement ps=conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs=ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				Cab c=new Cab();
+				c.setId(rs.getInt(1));
+				c.setCabNo(rs.getString(2));
+				c.setCabType(rs.getString(3));
+				c.setNoSeats(rs.getInt(4));
+				c.setDId(rs.getInt(5));
+				
+				list.add(c);
+						
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;
 	}
 }

@@ -25,6 +25,7 @@ public class DriverLoginServlet extends HttpServlet{
 		if (d!=null) {
 			session.setAttribute("Driver", d);
 			resp.sendRedirect("driver_pannel.jsp");
+			
 		} else {
 			session.setAttribute("invalidMsg", "Invalid Email or Password...");
 			resp.sendRedirect("driver_login.jsp");

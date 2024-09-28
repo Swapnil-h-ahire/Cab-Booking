@@ -19,12 +19,12 @@ public class AddCabServlet extends HttpServlet {
 		String cabNo=req.getParameter("cabno");
 		String cabType=req.getParameter("cabtype");
 		int noOfSeats=Integer.parseInt(req.getParameter("noofseats"));
-		
+		int dId=Integer.parseInt(req.getParameter("did"));
 		Cab c=new Cab();
 		c.setCabNo(cabNo);
 		c.setCabType(cabType);
 		c.setNoSeats(noOfSeats);
-		
+		c.setDId(dId);
 		DriverDAO dao=new DriverDAO(DBConnect.getConn());
 		boolean f=dao.addCab(c);
 		HttpSession session=req.getSession();

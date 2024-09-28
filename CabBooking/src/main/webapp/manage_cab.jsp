@@ -1,16 +1,26 @@
+<%@page import="java.util.*"%>
+<%@page import="com.entity.*"%>
+<%@page import="com.conn.DBConnect"%>
+<%@page import="com.dao.DriverDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Add cab</title>
-<%@include file="component/allCss.jsp" %>
+<title>viewContact</title>
+<%@include file="component/allCss.jsp"%>
+
+<style type="text/css">
+.crd-ho:hover {
+	background-color: #f7f7f7;
+}
+</style>
 </head>
 <body>
 
 	<!-- navbar -->
-	<%@page import="com.entity.Driver" %>
+	<%@page import="com.entity.Driver"%>
 	<%@ page import="com.entity.Admin"%>
 	<%@page import="com.entity.User"%>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -30,8 +40,8 @@
 						class="sr-only">(current)</span>
 				</a></li>
 				<li class="nav-item active"><a class="nav-link"
-					href="add_cab.jsp"><i class="fa-solid fa-square-plus"></i>
-						Add Cab</a></li>
+					href="add_cab.jsp"><i class="fa-solid fa-square-plus"></i> Add
+						Cab</a></li>
 
 				<li class="nav-item active"><a class="nav-link"
 					href="manage_cab.jsp"><i class="fa-sharp fa-regular fa-eye"></i>
@@ -85,69 +95,51 @@
 	<!-- navbar end -->
 
 
-	<div class="container-fluid">
-		<div class="row p-2">
-			<div class="col-md-6 offset-md-3">
 
-				<div class="card"></div>
-				<div class="card-body border border-secondary">
-					<h4 class="text-center text-success">Add Cab</h4>
-					
-					<%
-					String sucMsg = (String) session.getAttribute("sucMsg");
-					String errMsg = (String) session.getAttribute("errMsg");
-					if (sucMsg != null) {
-					%>
-					<p class="text-success text-center"><%= sucMsg %></p>
 
-					<%
-					session.removeAttribute("sucMsg");
-					}
-					if(errMsg!=null){
-					%>
-					<p class="text-danger text-center"><%= errMsg %></p>
-					<%
-					session.removeAttribute("errMsg");
-					}
-					%>
-					
-					<form action="addcab" method="post" class="bg-white">
- 						<% 
- 						if(d!=null){
- 						%> 
- 						<input type="hidden" value="<%=d.getId()%>" name="did"> 
- 						<%  
- 						}
-						
-						
- 						%> 
- 						
-						<div class="form-group">
-							<label for="exampleInputEmail1">Enter Cab No</label> <input
-								type="text" class="form-control" id="exampleInputEmail1"
-								aria-describedby="emailHelp" name="cabno">
+	<%
+	if (d == null) {
+		session.setAttribute("invalidMsg", "Login please...");
+		response.sendRedirect("login.jsp");
+	}
+	%>
+
+
+
+	<div class="container">
+		<div class="row p-4">
+			<%
+			if(d!=null){
+			DriverDAO dao = new DriverDAO(DBConnect.getConn());
+			List<Cab> cab=dao.allCabs(d.getId());
+			for(Cab c: cab){
+				%>
+				
+				
+			
+
+			<div class="col-md-3 p-2">
+			<img alt="image" src="image//5.jpg">
+				<div class="card crd-ho">
+					<div class="card-body">
+						<h5>Cab No:-<%=c.getCabNo() %></h5>
+						<p>Cab Type:-<%=c.getCabType() %></p>
+						<p>No Of Seats:-<%=c.getNoSeats() %></p>
+
+						<div class="text-center">
+							<a href="editContact.jsp?cid=<%=c.getId()%>"
+								class="btn btn-success btn-sm text-white">Edit</a> <a
+								href="delete?cid=<%=c.getId() %>" class="btn btn-danger btn-sm text-white">Delete</a>
 						</div>
-						<div class="form-group">
-							<label for="exampleInputEmail1">Enter Cab Type</label> <input
-								type="text" class="form-control" id="exampleInputEmail1"
-								aria-describedby="emailHelp" name="cabtype">
-						</div>
-						<div class="form-group">
-							<label for="exampleInputEmail1">Enter No of seats</label> <input
-								type="number" class="form-control" id="exampleInputEmail1"
-								aria-describedby="emailHelp" name="noofseats">
-						</div>
-
-
-						<div class="text-center mt-2">
-							<button type="submit" class="btn btn-primary">Add
-								Cab</button>
-						</div>
-					</form>
-
-
+					</div>
 				</div>
 			</div>
+						<% 
+			 } 
+			  }
+			%> 
+
+			
 		</div>
 	</div>
 

@@ -5,6 +5,7 @@ public class Cab {
 	private String cabNo;
 	private String cabType;
 	private int noSeats;
+	private int dId;
 	public int getId() {
 		return id;
 	}
@@ -30,5 +31,10 @@ public class Cab {
 		this.noSeats = noSeats;
 	}
 	
-	
+	public void setDId(int dId) {
+		this.dId = dId;
+	}
+	public int getDId() {
+		return dId;
+	}
 }

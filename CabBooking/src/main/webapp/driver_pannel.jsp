@@ -47,6 +47,7 @@
 				<a data-toggle="modal" data-target="#staticBackdrop"
 					class="btn btn-danger ml-2 text-white">Logout</a>
 			</form>
+			<%=d.getId()%>
 
 
 
